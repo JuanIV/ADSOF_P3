@@ -55,49 +55,49 @@ public class EstacionMetereologica {
 	}
 	
 	public Sensor getSensor(String id) {
-		return sensores.get(id).sensor;
+		if(sensores.containsKey(id))
+			return sensores.get(id).sensor;
+		else return null;
 	}
 	
 	public <T extends Sensor> List<T> getSensoresPorTipo(Class<T> tipo) {
-	    return sensores.values().stream()
-	        .map(si -> si.sensor)
-	        .filter(s -> tipo.isInstance(s))
-	        .map(s -> tipo.cast(s))
-	        .collect(Collectors.toList());
+		return sensores.values().stream()
+	    		.map(si -> si.sensor)
+	    		.filter(s -> tipo.isInstance(s))
+	    		.map(s -> tipo.cast(s))
+	    		.collect(Collectors.toList());
 	}
 	
 	public void tomarMediciones() {
-	    for (SensorInstalado si : sensores.values()) {
-	        si.sensor.tomarMedicion();
-	    }
+		sensores.values().forEach(si -> si.sensor.tomarMedicion());
 	}
 	
 	public void iniciarLecturasPeriodicas(long periodoSegundos, int maxLecturas) {
-	    scheduler = Executors.newSingleThreadScheduledExecutor();
-	    int[] count = {0};  // array para poder modificarlo desde la lambda
+		scheduler = Executors.newSingleThreadScheduledExecutor();
+		int[] count = {0};  // array para poder modificarlo desde la lambda
 
-	    scheduler.scheduleAtFixedRate(() -> {
-	        if (count[0] >= maxLecturas) {
-	            scheduler.shutdown();
-	            return;
-	        }
-	        tomarMediciones();
-	        count[0]++;
-	    }, 0, periodoSegundos, TimeUnit.SECONDS);
+		scheduler.scheduleAtFixedRate(() -> {
+			if (count[0] >= maxLecturas) {
+				scheduler.shutdown();
+				return;
+			}
+			tomarMediciones();
+			count[0]++;
+		}, 0, periodoSegundos, TimeUnit.SECONDS);
 	}
 
 	public void detenerLecturasPeriodicas() {
-	    if (scheduler != null && !scheduler.isShutdown()) {
-	        scheduler.shutdown();
-	    }
+		if (scheduler != null && !scheduler.isShutdown()) {
+			scheduler.shutdown();
+		}
 	}
 	
 	private void anadirSensor(Sensor sensor) throws DuplicatedSensorIdException {
-	    SensorInstalado si = new SensorInstalado(sensor);
-	    if (sensores.containsKey(si.sensor.getId())) {
-	        throw new DuplicatedSensorIdException("Ya existe un sensor con el mismo ID", sensores.get(si.sensor.getId()).sensor, si.sensor);
-	    }
-	    sensores.put(si.sensor.getId(), si);
+		SensorInstalado si = new SensorInstalado(sensor);
+		if (sensores.containsKey(si.sensor.getId())) {
+			throw new DuplicatedSensorIdException("Ya existe un sensor con el mismo ID", sensores.get(si.sensor.getId()).sensor, si.sensor);
+		}
+		sensores.put(si.sensor.getId(), si);
 	}
 	
 	public void anadirSensorTemperatura(UnidadTemperatura ud, double offset) throws DuplicatedSensorIdException {

@@ -14,6 +14,8 @@ public abstract class Sensor {
 		this.id = id;
 		this.unidad = unidad;
 		this.offset = offset;
+		fechaUltimaLectura = LocalDateTime.now();
+		valorUltimaLectura = 0;
 		duracionCalibrado = Duration.ofDays(365);
 	}
 
@@ -47,6 +49,15 @@ public abstract class Sensor {
 	
 	public boolean estaCalibrado() {
 		return (LocalDateTime.now().isBefore(fechaUltimaLectura.plus(duracionCalibrado))&&(unidad.inRange(valorUltimaLectura)));
+	}
+	
+	public void calibrar(double nuevoOffset) {
+		offset = nuevoOffset;
+		fechaUltimaLectura = LocalDateTime.now();
+	}
+	
+	public void calibrar() {
+		calibrar(offset);
 	}
 	
 	public abstract double simularMedicion();
