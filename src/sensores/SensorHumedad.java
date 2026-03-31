@@ -1,10 +1,14 @@
 package sensores;
 
-public class SensorHumedad extends Sensor<UnidadHumedad> {
+public class SensorHumedad extends Sensor {
 	private static int count = 0;
 	
 	public SensorHumedad(UnidadHumedad ud, double offset) {
 		super(String.format("HUM-%04d", (count++)), ud, offset);
+	}
+	
+	public double simularMedicion() {
+		return 0;
 	}
 	
 	@Override

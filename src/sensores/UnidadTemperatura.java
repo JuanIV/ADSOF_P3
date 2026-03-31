@@ -1,6 +1,6 @@
 package sensores;
 
-public enum UnidadTemperatura {
+public enum UnidadTemperatura implements Unidad {
 	CELSIUS(-273.15, 1000, "ºC"),
 	FAHRENHEIT(-459.67, 1832, "ºF"),
 	KELVIN(0, 1273.15, " K");

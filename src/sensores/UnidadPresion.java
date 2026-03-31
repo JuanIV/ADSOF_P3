@@ -1,6 +1,6 @@
 package sensores;
 
-public enum UnidadPresion {
+public enum UnidadPresion implements Unidad {
 	HECTOPASCAL(300, 1100, " hPa");
 	
 	private double min;

@@ -1,6 +1,6 @@
 package sensores;
 
-public enum UnidadHumedad {
+public enum UnidadHumedad implements Unidad {
 	HUMEDAD(0, 100, "%");
 	
 	private double min;
