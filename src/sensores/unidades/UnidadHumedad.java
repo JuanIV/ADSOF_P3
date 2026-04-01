@@ -1,4 +1,4 @@
-package sensores;
+package sensores.unidades;
 
 public enum UnidadHumedad implements Unidad {
 	HUMEDAD(0, 100, "%");

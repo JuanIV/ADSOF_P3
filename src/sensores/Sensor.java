@@ -1,6 +1,8 @@
 package sensores;
 
 import java.time.*;
+import sensores.estrategias.*;
+import sensores.unidades.*;
 
 public abstract class Sensor {
 	protected final String id;
@@ -9,11 +11,14 @@ public abstract class Sensor {
 	protected LocalDateTime fechaUltimaLectura;
 	protected double valorUltimaLectura;
 	private Duration duracionCalibrado;
+	private Estrategia estrategia;
 	
-	public Sensor(String id, Unidad unidad, double offset) {
+	public Sensor(String id, Unidad unidad, double offset, Estrategia estrategia) {
 		this.id = id;
 		this.unidad = unidad;
 		this.offset = offset;
+		this.estrategia = estrategia;
+		
 		fechaUltimaLectura = LocalDateTime.now();
 		valorUltimaLectura = 0;
 		duracionCalibrado = Duration.ofDays(365);
@@ -29,6 +34,10 @@ public abstract class Sensor {
 
 	public Unidad getUnidad() {
 		return unidad;
+	}
+	
+	public Estrategia getEstrategia() {
+		return estrategia;
 	}
 
 	public LocalDateTime getFechaUltimaLectura() {
@@ -60,13 +69,11 @@ public abstract class Sensor {
 		calibrar(offset);
 	}
 	
-	public abstract double simularMedicion();
-
 	public void tomarMedicion() {
-	    registrarMedicion(simularMedicion());
+	    registrarMedicion(estrategia.simularLectura());
 	}
 	
-	public void registrarMedicion(double value) {
+	private void registrarMedicion(double value) {
 		this.fechaUltimaLectura = LocalDateTime.now();
 		this.valorUltimaLectura = value - offset;
 	}

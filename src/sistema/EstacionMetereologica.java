@@ -1,6 +1,10 @@
 package sistema;
 
 import sensores.*;
+import sensores.unidades.UnidadHumedad;
+import sensores.unidades.UnidadPresion;
+import sensores.unidades.UnidadTemperatura;
+
 import java.time.*;
 import java.util.*;
 import java.util.concurrent.*;

@@ -1,4 +1,4 @@
-package sensores;
+package sensores.unidades;
 
 public interface Unidad {
     double getMin();

@@ -1,13 +1,15 @@
-package sensores;
+package sensores.unidades;
 
-public enum UnidadPresion implements Unidad {
-	HECTOPASCAL(300, 1100, " hPa");
+public enum UnidadTemperatura implements Unidad {
+	CELSIUS(-273.15, 1000, "ºC"),
+	FAHRENHEIT(-459.67, 1832, "ºF"),
+	KELVIN(0, 1273.15, " K");
 	
 	private double min;
 	private double max;
 	private String simbolo;
 	
-	private UnidadPresion(double min, double max, String simbolo) {
+	private UnidadTemperatura(double min, double max, String simbolo) {
 		this.min = min;
 		this.max = max;
 		this.simbolo = simbolo;
