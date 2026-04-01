@@ -1,8 +1,10 @@
 package sensores;
 
 import java.time.*;
+import java.util.*;
 import sensores.estrategias.*;
-import sensores.unidades.*;
+import unidades.*;
+import procesadores.*;
 
 public abstract class Sensor {
 	protected final String id;
@@ -12,17 +14,21 @@ public abstract class Sensor {
 	protected double valorUltimaLectura;
 	private Duration duracionCalibrado;
 	private Estrategia estrategia;
+	private Procesador procesador;
 	
-	public Sensor(String id, Unidad unidad, double offset, Estrategia estrategia) {
+	public Sensor(String id, Unidad unidad, double offset, Estrategia estrategia, Procesador procesador) {
 		this.id = id;
 		this.unidad = unidad;
 		this.offset = offset;
 		this.estrategia = estrategia;
+		this.procesador = procesador;
 		
 		fechaUltimaLectura = LocalDateTime.now();
 		valorUltimaLectura = 0;
 		duracionCalibrado = Duration.ofDays(365);
 	}
+	
+	/**********************Getters y setters******************************/
 
 	public String getId() {
 		return id;
@@ -32,7 +38,7 @@ public abstract class Sensor {
 		return offset;
 	}
 
-	public Unidad getUnidad() {
+	public Unidad getUnidadLectura() {
 		return unidad;
 	}
 	
@@ -56,6 +62,28 @@ public abstract class Sensor {
 		duracionCalibrado = duracion;
 	}
 	
+	public Unidad getUnidadEscritura() {
+		return procesador.getUnidadEscritura();
+	}
+	
+	public List<Registro> getHistorial() {
+		return procesador.getHistorial();
+	}
+	
+	public double getMedia() {
+		return procesador.getMedia();
+	}
+	
+	public double getMinimo() {
+		return procesador.getMinimo();
+	}
+	
+	public double getMaximo() {
+		return procesador.getMaximo();
+	}
+	
+	/****************************Métodos***********************************/
+	
 	public boolean estaCalibrado() {
 		return (LocalDateTime.now().isBefore(fechaUltimaLectura.plus(duracionCalibrado))&&(unidad.inRange(valorUltimaLectura)));
 	}
@@ -70,11 +98,10 @@ public abstract class Sensor {
 	}
 	
 	public void tomarMedicion() {
-	    registrarMedicion(estrategia.simularLectura());
-	}
-	
-	private void registrarMedicion(double value) {
+		double medicion = estrategia.simularLectura() - offset;
 		this.fechaUltimaLectura = LocalDateTime.now();
-		this.valorUltimaLectura = value - offset;
+		this.valorUltimaLectura = medicion;
+	    procesador.registrarMedicion(medicion);
 	}
+
 }

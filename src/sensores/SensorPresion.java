@@ -1,21 +1,20 @@
 package sensores;
 
+import conversores.Conversor;
+import excepciones.IncompatibleUnitsException;
+import procesadores.Procesador;
 import sensores.estrategias.*;
-import sensores.unidades.*;
+import unidades.*;
 
 public class SensorPresion extends Sensor {
 	private static int count = 0;
-
-	public SensorPresion(UnidadPresion ud, double offset) {
-		super(String.format("PRES-%04d", (count++)), ud, offset, new EstrategiaAnterior(0, (ud.getMax()+ud.getMin())/2));
-	}
 	
-	public SensorPresion(UnidadPresion ud, double offset, Estrategia estrategia) {
-		super(String.format("PRES-%04d", (count++)), ud, offset, estrategia);
-	}
-	
-	public double simularMedicion() {
-		return 0;
+	public SensorPresion(UnidadPresion ud, double offset, Estrategia estrategia, Conversor conv) throws IncompatibleUnitsException {
+		super(String.format("PRES-%04d", (count++)), ud, offset, estrategia, new Procesador(conv));
+		if(!ud.equals(conv.getUdEntrada())) {
+			count--;
+			throw new IncompatibleUnitsException("Las unidades del sensor y el conversor no son compatibles");
+		}
 	}
 	
 	@Override

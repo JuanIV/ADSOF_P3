@@ -1,21 +1,20 @@
 package sensores;
 
+import conversores.Conversor;
+import excepciones.IncompatibleUnitsException;
+import procesadores.Procesador;
 import sensores.estrategias.*;
-import sensores.unidades.*;
+import unidades.*;
 
 public class SensorTemperatura extends Sensor {
 	private static int count  = 0;
 	
-	public SensorTemperatura(UnidadTemperatura ud, double offset) {
-		super(String.format("TEMP-%04d", (count++)), ud, offset, new EstrategiaAnterior(0, (ud.getMax()+ud.getMin())/2));
-	}
-	
-	public SensorTemperatura(UnidadTemperatura ud, double offset, Estrategia estrategia) {
-		super(String.format("TEMP-%04d", (count++)), ud, offset, estrategia);
-	}
-	
-	public double simularMedicion() {
-		return 0;
+	public SensorTemperatura(UnidadTemperatura ud, double offset, Estrategia estrategia, Conversor conv) throws IncompatibleUnitsException {
+		super(String.format("TEMP-%04d", (count++)), ud, offset, estrategia, new Procesador(conv));
+		if(!ud.equals(conv.getUdEntrada())) {
+			count--;
+			throw new IncompatibleUnitsException("Las unidades del sensor y el conversor no son compatibles");
+		}
 	}
 	
 	@Override

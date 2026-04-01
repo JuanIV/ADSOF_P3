@@ -1,15 +1,14 @@
 package sistema;
 
 import sensores.*;
-import sensores.unidades.UnidadHumedad;
-import sensores.unidades.UnidadPresion;
-import sensores.unidades.UnidadTemperatura;
-
+import unidades.*;
+import conversores.*;
 import java.time.*;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.stream.*;
 import excepciones.*;
+import sensores.estrategias.*;
 
 public class EstacionMetereologica {
 	private ScheduledExecutorService scheduler;
@@ -25,7 +24,14 @@ public class EstacionMetereologica {
 		
 		@Override
 		public String toString() {
-			return sensor.getId() + " (desde: " + fechaInstalacion + "): " + sensor.toString();
+			StringBuilder str = new StringBuilder();
+			str.append(sensor.getId() + "("+sensor.getUnidadLectura().getSimbolo()+")");
+			if(!sensor.getUnidadEscritura().equals(sensor.getUnidadLectura()))
+				str.append(" con conversor a "+sensor.getUnidadEscritura().getSimbolo());
+			str.append(": "+sensor.getHistorial());
+			if(!sensor.getHistorial().isEmpty())
+				str.append(String.format(" -- MIN: %.2f MAX: %.2f AVG: %.2f", sensor.getMinimo(), sensor.getMaximo(), sensor.getMedia()));
+			return str.toString();
 		}
 	}
 	
@@ -40,7 +46,7 @@ public class EstacionMetereologica {
 		this.latitud = latitud;
 	}
 	
-	/************************ Métodos ****************************/
+	/************************ Setters y Getters ****************************/
 	
 	public String getNombre() {
 		return nombre;
@@ -72,6 +78,8 @@ public class EstacionMetereologica {
 	    		.collect(Collectors.toList());
 	}
 	
+	/**************************Métodos**********************************/
+	
 	public void tomarMediciones() {
 		sensores.values().forEach(si -> si.sensor.tomarMedicion());
 	}
@@ -96,7 +104,18 @@ public class EstacionMetereologica {
 		}
 	}
 	
-	private void anadirSensor(Sensor sensor) throws DuplicatedSensorIdException {
+	public void anadirSensor(Unidad ud, double offset, Estrategia estrategia, Conversor conv) throws IncompatibleUnitsException, DuplicatedSensorIdException {
+		Sensor sensor;
+		if(ud instanceof UnidadHumedad) {
+			sensor = new SensorHumedad((UnidadHumedad)ud, offset, estrategia, conv);
+		} else if(ud instanceof UnidadTemperatura) {
+			sensor = new SensorTemperatura((UnidadTemperatura)ud, offset, estrategia, conv);
+		} else if(ud instanceof UnidadPresion) {
+			sensor = new SensorPresion((UnidadPresion)ud, offset, estrategia, conv);
+		} else {
+			throw new IncompatibleUnitsException("Tipo de unidad sin sensor específico");
+		}
+		
 		SensorInstalado si = new SensorInstalado(sensor);
 		if (sensores.containsKey(si.sensor.getId())) {
 			throw new DuplicatedSensorIdException("Ya existe un sensor con el mismo ID", sensores.get(si.sensor.getId()).sensor, si.sensor);
@@ -104,20 +123,29 @@ public class EstacionMetereologica {
 		sensores.put(si.sensor.getId(), si);
 	}
 	
-	public void anadirSensorTemperatura(UnidadTemperatura ud, double offset) throws DuplicatedSensorIdException {
-		anadirSensor(new SensorTemperatura(ud, offset));
+	public void anadirSensor(Unidad ud, double offset, Estrategia estrategia) throws IncompatibleUnitsException, DuplicatedSensorIdException {
+		anadirSensor(ud, offset, estrategia, Conversor.identidad(ud));
 	}
 	
-	public void anadirSensorHumedad(UnidadHumedad ud, double offset) throws DuplicatedSensorIdException {
-		anadirSensor(new SensorHumedad(ud, offset));
+	public void anadirSensor(Unidad ud, double offset, Conversor conv) throws IncompatibleUnitsException, DuplicatedSensorIdException {
+		anadirSensor(ud, offset, new EstrategiaAnterior(0, (ud.getMax()+ud.getMin())/2), conv);
 	}
 	
-	public void anadirSensorPresion(UnidadPresion ud, double offset) throws DuplicatedSensorIdException {
-		anadirSensor(new SensorPresion(ud, offset));
+	public void anadirSensor(Unidad ud, double offset) throws IncompatibleUnitsException, DuplicatedSensorIdException {
+		anadirSensor(ud, offset, new EstrategiaAnterior(0, (ud.getMax()+ud.getMin())/2), Conversor.identidad(ud));
 	}
 	
 	@Override
 	public String toString() {
-		return sensores.values().toString();
+		StringBuilder str = new StringBuilder();
+		str.append("Estación metereológica: "+ nombre);
+		str.append(String.format("\nUbicación: %.4f, %.4f", longitud, latitud));
+		str.append("\n----------------------------");
+		str.append("\nSensores instalados: "+sensores.size());
+		//str.append("\nUltima lectura: "+ultimaLectura);
+		for(SensorInstalado sens : sensores.values()) {
+			str.append("\n"+sens);
+		}
+		return str.toString();
 	}
 }
