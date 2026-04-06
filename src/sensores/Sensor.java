@@ -5,27 +5,33 @@ import java.util.*;
 import sensores.estrategias.*;
 import unidades.*;
 import procesadores.*;
+import excepciones.*;
 
 public abstract class Sensor {
 	protected final String id;
 	protected double offset;
 	protected Unidad unidad;
 	protected LocalDateTime fechaUltimaLectura;
+	protected LocalDateTime fechaUltimoCalibrado;
 	protected double valorUltimaLectura;
 	private Duration duracionCalibrado;
 	private Estrategia estrategia;
 	private Procesador procesador;
 	
-	public Sensor(String id, Unidad unidad, double offset, Estrategia estrategia, Procesador procesador) {
+	public Sensor(String id, Unidad unidad, double offset, Estrategia estrategia, Procesador procesador, Duration duracionCalibrado) {
 		this.id = id;
-		this.unidad = unidad;
 		this.offset = offset;
+		this.unidad = unidad;
+		this.fechaUltimaLectura = LocalDateTime.now();
+		this.fechaUltimoCalibrado = LocalDateTime.now();
+		this.valorUltimaLectura = 0;
+		this.duracionCalibrado = duracionCalibrado;
 		this.estrategia = estrategia;
 		this.procesador = procesador;
-		
-		fechaUltimaLectura = LocalDateTime.now();
-		valorUltimaLectura = 0;
-		duracionCalibrado = Duration.ofDays(365);
+	}
+	
+	public Sensor(String id, Unidad unidad, double offset, Estrategia estrategia, Procesador procesador) {
+		this(id, unidad, offset, estrategia, procesador, Duration.ofDays(365));
 	}
 	
 	/**********************Getters y setters******************************/
@@ -85,20 +91,31 @@ public abstract class Sensor {
 	/****************************Métodos***********************************/
 	
 	public boolean estaCalibrado() {
-		return (LocalDateTime.now().isBefore(fechaUltimaLectura.plus(duracionCalibrado))&&(unidad.inRange(valorUltimaLectura)));
+		return (LocalDateTime.now().isBefore(fechaUltimoCalibrado.plus(duracionCalibrado))&&(unidad.inRange(valorUltimaLectura)));
+	}
+	
+	public void calibrar(double nuevoOffset, Duration duracionCalibrado) {
+		offset = nuevoOffset;
+		this.duracionCalibrado = duracionCalibrado;
+		fechaUltimoCalibrado = LocalDateTime.now();
 	}
 	
 	public void calibrar(double nuevoOffset) {
-		offset = nuevoOffset;
-		fechaUltimaLectura = LocalDateTime.now();
+		calibrar(nuevoOffset, this.duracionCalibrado);
+	}
+	
+	public void calibrar(Duration duracionCalibrado) {
+		calibrar(offset, duracionCalibrado);
 	}
 	
 	public void calibrar() {
-		calibrar(offset);
+		calibrar(offset, duracionCalibrado);
 	}
 	
-	public void tomarMedicion() {
+	public void tomarMedicion() throws SensorDescalibrado {
 		double medicion = estrategia.simularLectura() - offset;
+		if(!(unidad.inRange(medicion)) || !estaCalibrado())
+			throw new SensorDescalibrado(this);
 		this.fechaUltimaLectura = LocalDateTime.now();
 		this.valorUltimaLectura = medicion;
 	    procesador.registrarMedicion(medicion);

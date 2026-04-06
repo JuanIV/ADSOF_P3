@@ -38,12 +38,23 @@ public class EstacionMetereologica {
 	private String nombre;
 	private double longitud;
 	private double latitud;
+	private double cambioBrusco;
 	private Map<String, SensorInstalado> sensores = new HashMap<String, SensorInstalado>();
+	
+	public EstacionMetereologica(String nombre, double longitud, double latitud, double cambioBrusco) {
+		this.nombre = nombre;
+		this.longitud = longitud;
+		this.latitud = latitud;
+		if(cambioBrusco > 100) cambioBrusco = 100;
+		if(cambioBrusco < 0) cambioBrusco = 0;
+		this.cambioBrusco = cambioBrusco;
+	}
 	
 	public EstacionMetereologica(String nombre, double longitud, double latitud) {
 		this.nombre = nombre;
 		this.longitud = longitud;
 		this.latitud = latitud;
+		this.cambioBrusco = 50.0;
 	}
 	
 	/************************ Setters y Getters ****************************/
@@ -78,10 +89,27 @@ public class EstacionMetereologica {
 	    		.collect(Collectors.toList());
 	}
 	
-	/**************************Métodos**********************************/
+	public void setCambioBrusco(double cambioBrusco) {
+		if(cambioBrusco > 100) cambioBrusco = 100;
+		if(cambioBrusco < 0) cambioBrusco = 0;
+		this.cambioBrusco = cambioBrusco;
+	}
 	
-	public void tomarMediciones() {
-		sensores.values().forEach(si -> si.sensor.tomarMedicion());
+	/**************************Métodos **********************************/
+	
+	private void medir(SensorInstalado si) throws SensorDescalibrado, CambioBruscoException {
+		double ultima = si.sensor.getValorUltimaLectura();
+		si.sensor.tomarMedicion();
+		double actual = si.sensor.getValorUltimaLectura();
+		if((ultima != 0) && Math.abs((actual-ultima)/ultima) > cambioBrusco) {
+			throw new CambioBruscoException("Ha ocurrido un cambio brusco", si.sensor);
+		}
+	}
+	
+	public void tomarMediciones() throws SensorDescalibrado, CambioBruscoException {
+		for(SensorInstalado si : sensores.values()) {
+			medir(si);
+		}
 	}
 	
 	public void iniciarLecturasPeriodicas(long periodoSegundos, int maxLecturas) {
@@ -89,12 +117,18 @@ public class EstacionMetereologica {
 		int[] count = {0};  // array para poder modificarlo desde la lambda
 
 		scheduler.scheduleAtFixedRate(() -> {
-			if (count[0] >= maxLecturas) {
+			try {
+				if (count[0] >= maxLecturas) {
+					scheduler.shutdown();
+					return;
+				}
+				tomarMediciones();
+				count[0]++;
+			} catch(SensorDescalibrado | CambioBruscoException e) {
 				scheduler.shutdown();
-				return;
+				throw new RuntimeException(e);
 			}
-			tomarMediciones();
-			count[0]++;
+			
 		}, 0, periodoSegundos, TimeUnit.SECONDS);
 	}
 
