@@ -1,29 +1,28 @@
 package sensores.estrategias;
 
-// TODO: Auto-generated Javadoc
 /**
- * Clase Class EstrategiaRango.
+ * Clase EstrategiaRango.
  *
  * @author Juan Ibáñez y Tiago Oselka
  * @version 1.0
  */
 public class EstrategiaRango implements Estrategia {
 	
-	/** The probabilidad fallo. */
+	/** Probabilidad de fallo en la medicion. */
 	private double probabilidadFallo;
 	
-	/** The min. */
+	/** Valor minimo de la medicion. */
 	private double min;
 	
-	/** The max. */
+	/** Valor maximo de la medicion. */
 	private double max;
 	
 	/**
 	 * Inicializa un nuevo objeto de la clase estrategia rango.
 	 *
-	 * @param prob the prob
-	 * @param min the min
-	 * @param max the max
+	 * @param prob Probabilidad de fallo
+	 * @param min Cota inferior
+	 * @param max Cota superior
 	 */
 	public EstrategiaRango(double prob, double min, double max) {
 		this.probabilidadFallo = prob;
@@ -68,7 +67,7 @@ public class EstrategiaRango implements Estrategia {
 	}
 
 	/**
-	 * Simular lectura.
+	 * Simula una medicion tomando un número aleatorio entre min y max, con probabilidad de fallar
 	 *
 	 * @return the double
 	 */

@@ -1,28 +1,27 @@
 package sensores.estrategias;
 
-// TODO: Auto-generated Javadoc
 /**
- * Clase Class EstrategiaMedia.
+ * Clase EstrategiaMedia.
  *
  * @author Juan Ibáñez y Tiago Oselka
  * @version 1.0
  */
 public class EstrategiaMedia implements Estrategia {
 	
-	/** The count. */
+	/** Cuenta del total de mediciones hechas */
 	private int count = 0;
 	
-	/** The media. */
+	/** Media de valores medidos */
 	private double media = 0;
 	
-	/** The rango. */
+	/** Rango alrededor de la medicion media sobre el que estará la próxima medicion */
 	private double rango;
 	
 	/**
 	 * Inicializa un nuevo objeto de la clase estrategia media.
 	 *
-	 * @param rango the rango
-	 * @param valInicial the val inicial
+	 * @param rango Rango alrededor de la medicion media sobre el que estará la próxima medicion
+	 * @param valInicial Valor con el que comienza la estrategia
 	 */
 	public EstrategiaMedia(double rango, double valInicial) {
 		this.rango = rango;
@@ -48,9 +47,9 @@ public class EstrategiaMedia implements Estrategia {
 	}
 
 	/**
-	 * Simular lectura.
+	 * Simula una lectura tomando un valor entre media-rango y media+rango
 	 *
-	 * @return the double
+	 * @return double con la medicion obtenida
 	 */
 	@Override
 	public double simularLectura() {

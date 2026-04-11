@@ -4,34 +4,33 @@ import java.util.function.DoubleUnaryOperator;
 import unidades.*;
 import excepciones.*;
 
-// TODO: Auto-generated Javadoc
 /**
- * Clase Class Conversor.
+ * Clase Conversor.
  *
  * @author Juan Ibáñez y Tiago Oselka
  * @version 1.0
  */
 public class Conversor {
 	
-	/** The ud entrada. */
+	/** Unidad de entrada. */
 	protected Unidad udEntrada;
 	
-	/** The ud salida. */
+	/** Unidad de salida. */
 	protected Unidad udSalida;
 	
-	/** The formula. */
+	/** Fórmula de conversión de unidades. */
 	protected DoubleUnaryOperator formula;
 	
-	/** The formula inversa. */
+	/** Fórmula inversa. */
 	protected DoubleUnaryOperator formulaInversa;
 	
 	/**
 	 * Inicializa un nuevo objeto de la clase conversor.
 	 *
-	 * @param in the in
-	 * @param out the out
-	 * @param f the f
-	 * @param inv the inv
+	 * @param in Unidades de entrada
+	 * @param out Unidades de salida
+	 * @param f Fórmula de conversión
+	 * @param inv Fórmula inversa
 	 */
 	public Conversor(Unidad in, Unidad out, DoubleUnaryOperator f, DoubleUnaryOperator inv) {
 		udEntrada = in;
@@ -61,8 +60,8 @@ public class Conversor {
 	/**
 	 * Aplicar conversion.
 	 *
-	 * @param value the value
-	 * @return the double
+	 * @param value Valor a convertir
+	 * @return Valor convertido
 	 */
 	public double aplicarConversion(double value) {
 		return formula.applyAsDouble(value);
@@ -71,8 +70,8 @@ public class Conversor {
 	/**
 	 * Aplicar inverso.
 	 *
-	 * @param value the value
-	 * @return the double
+	 * @param value Valor a convertir
+	 * @return Valor convertido
 	 */
 	public double aplicarInverso(double value) {
 		return formulaInversa.applyAsDouble(value);
@@ -81,19 +80,19 @@ public class Conversor {
 	/**
 	 * Obtener conversor inverso.
 	 *
-	 * @return the conversor
+	 * @return Conversor inverso a este
 	 */
 	public Conversor obtenerConversorInverso() {
 		return new Conversor(udSalida, udEntrada, formulaInversa, formula);
 	}
 	
 	/**
-	 * Concatenar.
+	 * Concatenar conversores para obtener uno nuevo.
 	 *
-	 * @param c1 the c 1
-	 * @param c2 the c 2
-	 * @return the conversor
-	 * @throws IncompatibleUnitsException the incompatible units exception
+	 * @param c1 Primer conversor (cuya entrada será la entrada del nuevo)
+	 * @param c2 Segundo conversor (cuya salida será la salida del nuevo)
+	 * @return Conversor obtenido de concatenar c1 y c2
+	 * @throws IncompatibleUnitsException si la salida de c1 no tiene las mismas unidades que la entrada de c2
 	 */
 	public static Conversor concatenar(Conversor c1, Conversor c2) throws IncompatibleUnitsException {
 		if (!c1.udSalida.equals(c2.udEntrada)) {
@@ -107,10 +106,10 @@ public class Conversor {
 	}
 	
 	/**
-	 * Identidad.
+	 * Método para obtener el conversor identidad.
 	 *
-	 * @param ud the ud
-	 * @return the conversor
+	 * @param ud Unidades de las que se quiere la identidad.
+	 * @return Conversor identidad que no transforma las unidades.
 	 */
 	public static Conversor identidad(Unidad ud) {
 		return new Conversor(ud, ud, u->u, u->u);

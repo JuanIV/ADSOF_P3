@@ -3,31 +3,30 @@ package conversores;
 import unidades.*;
 import excepciones.*;
 
-// TODO: Auto-generated Javadoc
 /**
- * A factory for creating Conversor objects.
+ * Clase fábrica para crear converosres entre unidades
  */
 public class ConversorFactory {
 	
-	/** The Celsius kelvin. */
+	/** Conversor celsius-kelvin. */
 	private static Conversor CelsiusKelvin = new Conversor(UnidadTemperatura.CELSIUS, UnidadTemperatura.KELVIN, u-> u+273.15, u-> u-273.15);
 	
-	/** The Celsius fahrenheit. */
+	/** Conversor celsius-fahrenheit. */
 	private static Conversor CelsiusFahrenheit = new Conversor(UnidadTemperatura.CELSIUS, UnidadTemperatura.FAHRENHEIT, u-> u*(9.0/5.0) + 32, u-> (u-32)*(5.0/9.0));
 	
-	/** The h pa pascal. */
+	/** Conversor hPa-Pascal*/
 	private static Conversor hPaPascal = new Conversor(UnidadPresion.HECTOPASCAL, UnidadPresion.PASCAL, u->u*100, u->u/100.0);
 	
-	/** The h pa mbar. */
+	/** Conversor hPa-Mbar */
 	private static Conversor hPaMbar = new Conversor(UnidadPresion.HECTOPASCAL, UnidadPresion.MILIBAR, u->u, u->u);
 	
 	/**
-	 * Crear.
+	 * Método para crear un conversor a partir de los que se tiene concatenando e invirtiendo
 	 *
-	 * @param in the in
-	 * @param out the out
-	 * @return the conversor
-	 * @throws IncompatibleUnitsException the incompatible units exception
+	 * @param in Unidades de entrada
+	 * @param out Unidades de salida
+	 * @return Conversor de las unidades de entrada a las unidades de salida
+	 * @throws IncompatibleUnitsException si las unidades de entrada y salida no son del mismo tipo
 	 */
 	public static Conversor crear(Unidad in, Unidad out) throws IncompatibleUnitsException {
 		switch(in) {

@@ -6,9 +6,8 @@ import procesadores.Procesador;
 import sensores.estrategias.*;
 import unidades.*;
 
-// TODO: Auto-generated Javadoc
 /**
- * Clase Class SensorTemperatura.
+ * Clase SensorTemperatura.
  *
  * @author Juan Ibáñez y Tiago Oselka
  * @version 1.0
@@ -21,11 +20,11 @@ public class SensorTemperatura extends Sensor {
 	/**
 	 * Inicializa un nuevo objeto de la clase sensor temperatura.
 	 *
-	 * @param ud the ud
-	 * @param offset the offset
-	 * @param estrategia the estrategia
-	 * @param conv the conv
-	 * @throws IncompatibleUnitsException the incompatible units exception
+	 * @param ud Unidades del sensor
+	 * @param offset Offset del sensor
+	 * @param estrategia Estrategia que sigue el sensor
+	 * @param conv Conversor que se aplica a las mediciones del sensor antes de registrar
+	 * @throws IncompatibleUnitsException si las unidades del sensor no son las unidades de entrada del conversor
 	 */
 	public SensorTemperatura(UnidadTemperatura ud, double offset, Estrategia estrategia, Conversor conv) throws IncompatibleUnitsException {
 		super(String.format("TEMP-%04d", (count++)), ud, offset, estrategia, new Procesador(conv));
@@ -38,7 +37,7 @@ public class SensorTemperatura extends Sensor {
 	/**
 	 * To string.
 	 *
-	 * @return the string
+	 * @return String con la información del sensor
 	 */
 	@Override
 	public String toString() {

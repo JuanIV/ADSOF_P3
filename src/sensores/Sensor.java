@@ -7,51 +7,50 @@ import unidades.*;
 import procesadores.*;
 import excepciones.*;
 
-// TODO: Auto-generated Javadoc
 /**
- * Clase Class Sensor.
+ * Clase Sensor.
  *
  * @author Juan Ibáñez y Tiago Oselka
  * @version 1.0
  */
 public abstract class Sensor {
 	
-	/** The id. */
+	/** id del sensor. */
 	protected final String id;
 	
-	/** The offset. */
+	/** offset del sensor. */
 	protected double offset;
 	
-	/** The unidad. */
+	/** Unidades de medición del sensor. */
 	protected Unidad unidad;
 	
-	/** The fecha ultima lectura. */
+	/** Fecha de la ultima lectura. */
 	protected LocalDateTime fechaUltimaLectura;
 	
-	/** The fecha ultimo calibrado. */
+	/** Fecha del ultimo calibrado. */
 	protected LocalDateTime fechaUltimoCalibrado;
 	
-	/** The valor ultima lectura. */
+	/** Valor de la ultima lectura. */
 	protected double valorUltimaLectura;
 	
-	/** The duracion calibrado. */
+	/** Duracion del calibrado. */
 	private Duration duracionCalibrado;
 	
-	/** The estrategia. */
+	/** Estrategia que sigue el sensor. */
 	private Estrategia estrategia;
 	
-	/** The procesador. */
+	/** Procesador del sensor. */
 	private Procesador procesador;
 	
 	/**
 	 * Inicializa un nuevo objeto de la clase sensor.
 	 *
-	 * @param id the id
-	 * @param unidad the unidad
-	 * @param offset the offset
-	 * @param estrategia the estrategia
-	 * @param procesador the procesador
-	 * @param duracionCalibrado the duracion calibrado
+	 * @param id ID del sensor
+	 * @param unidad Unidades del sensor
+	 * @param offset Offset del sensor
+	 * @param estrategia Estrategia del sensor
+	 * @param procesador Procesador del sensor
+	 * @param duracionCalibrado Duracion del calibrado del sensor
 	 */
 	public Sensor(String id, Unidad unidad, double offset, Estrategia estrategia, Procesador procesador, Duration duracionCalibrado) {
 		this.id = id;
@@ -68,22 +67,24 @@ public abstract class Sensor {
 	/**
 	 * Inicializa un nuevo objeto de la clase sensor.
 	 *
-	 * @param id the id
-	 * @param unidad the unidad
-	 * @param offset the offset
-	 * @param estrategia the estrategia
-	 * @param procesador the procesador
+	 * @param id ID del sensor
+	 * @param unidad Unidades del sensor
+	 * @param offset Offset del sensor
+	 * @param estrategia Estrategia del sensor
+	 * @param procesador Procesador del sensor
 	 */
 	public Sensor(String id, Unidad unidad, double offset, Estrategia estrategia, Procesador procesador) {
 		this(id, unidad, offset, estrategia, procesador, Duration.ofDays(365));
 	}
 	
+	/*********************Getters y setters*****************************/
+	
+	
 	/**
-	 * ********************Getters y setters*****************************.
-	 *
+	 * Getter de la id del sensor
+	 * 
 	 * @return id
 	 */
-
 	public String getId() {
 		return id;
 	}
@@ -91,7 +92,7 @@ public abstract class Sensor {
 	/**
 	 * Getter de offset.
 	 *
-	 * @return offset
+	 * @return offset del sensor
 	 */
 	public double getOffset() {
 		return offset;
@@ -170,7 +171,7 @@ public abstract class Sensor {
 	}
 	
 	/**
-	 * Getter de media.
+	 * Getter de la media de los valores leidos.
 	 *
 	 * @return media
 	 */
@@ -179,7 +180,7 @@ public abstract class Sensor {
 	}
 	
 	/**
-	 * Getter de minimo.
+	 * Getter del minimo valor medido.
 	 *
 	 * @return minimo
 	 */
@@ -188,7 +189,7 @@ public abstract class Sensor {
 	}
 	
 	/**
-	 * Getter de maximo.
+	 * Getter del maximo valor medido.
 	 *
 	 * @return maximo
 	 */
@@ -196,21 +197,22 @@ public abstract class Sensor {
 		return procesador.getMaximo();
 	}
 	
-	/**
-	 * **************************Métodos**********************************.
-	 *
-	 * @return true, if successful
-	 */
+	/****************************Métodos**********************************/
 	
+	/**
+	 * Comprueba si el sensor está calibrado
+	 *
+	 * @return true, si está calibrado, false si no
+	 */
 	public boolean estaCalibrado() {
 		return (LocalDateTime.now().isBefore(fechaUltimoCalibrado.plus(duracionCalibrado)));
 	}
 	
 	/**
-	 * Calibrar.
+	 * Calibrar el sensor.
 	 *
-	 * @param nuevoOffset the nuevo offset
-	 * @param duracionCalibrado the duracion calibrado
+	 * @param nuevoOffset nuevo offset
+	 * @param duracionCalibrado duracion calibrado
 	 */
 	public void calibrar(double nuevoOffset, Duration duracionCalibrado) {
 		offset = nuevoOffset;
@@ -221,7 +223,7 @@ public abstract class Sensor {
 	/**
 	 * Calibrar.
 	 *
-	 * @param nuevoOffset the nuevo offset
+	 * @param nuevoOffset nuevo offset
 	 */
 	public void calibrar(double nuevoOffset) {
 		calibrar(nuevoOffset, this.duracionCalibrado);
@@ -230,7 +232,7 @@ public abstract class Sensor {
 	/**
 	 * Calibrar.
 	 *
-	 * @param duracionCalibrado the duracion calibrado
+	 * @param duracionCalibrado duracion calibrado
 	 */
 	public void calibrar(Duration duracionCalibrado) {
 		calibrar(offset, duracionCalibrado);
@@ -246,7 +248,7 @@ public abstract class Sensor {
 	/**
 	 * Tomar medicion.
 	 *
-	 * @throws SensorDescalibrado the sensor descalibrado
+	 * @throws SensorDescalibrado si el sensor obtiene una medicion fuera de rango
 	 */
 	public void tomarMedicion() throws SensorDescalibrado {
 		double medicion = estrategia.simularLectura() - offset;

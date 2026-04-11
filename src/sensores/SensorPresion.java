@@ -6,9 +6,8 @@ import procesadores.Procesador;
 import sensores.estrategias.*;
 import unidades.*;
 
-// TODO: Auto-generated Javadoc
 /**
- * Clase Class SensorPresion.
+ * Clase SensorPresion.
  *
  * @author Juan Ibáñez y Tiago Oselka
  * @version 1.0
@@ -21,11 +20,11 @@ public class SensorPresion extends Sensor {
 	/**
 	 * Inicializa un nuevo objeto de la clase sensor presion.
 	 *
-	 * @param ud the ud
-	 * @param offset the offset
-	 * @param estrategia the estrategia
-	 * @param conv the conv
-	 * @throws IncompatibleUnitsException the incompatible units exception
+	 * @param ud Unidades del sensor
+	 * @param offset Offset del sensor
+	 * @param estrategia Estrategia que sigue el sensor
+	 * @param conv Conversor que se aplica a las mediciones del sensor antes de registrar
+	 * @throws IncompatibleUnitsException si las unidades del sensor no son las unidades de entrada del conversor
 	 */
 	public SensorPresion(UnidadPresion ud, double offset, Estrategia estrategia, Conversor conv) throws IncompatibleUnitsException {
 		super(String.format("PRES-%04d", (count++)), ud, offset, estrategia, new Procesador(conv));
@@ -38,7 +37,7 @@ public class SensorPresion extends Sensor {
 	/**
 	 * To string.
 	 *
-	 * @return the string
+	 * @return String con la información del sensor
 	 */
 	@Override
 	public String toString() {
