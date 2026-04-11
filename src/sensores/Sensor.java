@@ -91,7 +91,7 @@ public abstract class Sensor {
 	/****************************Métodos***********************************/
 	
 	public boolean estaCalibrado() {
-		return (LocalDateTime.now().isBefore(fechaUltimoCalibrado.plus(duracionCalibrado))&&(unidad.inRange(valorUltimaLectura)));
+		return (LocalDateTime.now().isBefore(fechaUltimoCalibrado.plus(duracionCalibrado)));
 	}
 	
 	public void calibrar(double nuevoOffset, Duration duracionCalibrado) {

@@ -2,14 +2,10 @@ package excepciones;
 
 import sensores.*;
 
-public class SensorDescalibrado extends Exception {
-	private final Sensor sensor;
+public class SensorDescalibrado extends AlertaSensor {
+	private static final long serialVersionUID = 1L;
 
-	public SensorDescalibrado(Sensor s) {
-		sensor = s;
-	}
-	
-	public Sensor getSensor() {
-		return sensor;
+	public SensorDescalibrado(Sensor sensor) {
+		super(sensor, "Sensor descalibrado");
 	}
 }
