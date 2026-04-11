@@ -3,12 +3,32 @@ package conversores;
 import unidades.*;
 import excepciones.*;
 
+// TODO: Auto-generated Javadoc
+/**
+ * A factory for creating Conversor objects.
+ */
 public class ConversorFactory {
+	
+	/** The Celsius kelvin. */
 	private static Conversor CelsiusKelvin = new Conversor(UnidadTemperatura.CELSIUS, UnidadTemperatura.KELVIN, u-> u+273.15, u-> u-273.15);
+	
+	/** The Celsius fahrenheit. */
 	private static Conversor CelsiusFahrenheit = new Conversor(UnidadTemperatura.CELSIUS, UnidadTemperatura.FAHRENHEIT, u-> u*(9.0/5.0) + 32, u-> (u-32)*(5.0/9.0));
+	
+	/** The h pa pascal. */
 	private static Conversor hPaPascal = new Conversor(UnidadPresion.HECTOPASCAL, UnidadPresion.PASCAL, u->u*100, u->u/100.0);
+	
+	/** The h pa mbar. */
 	private static Conversor hPaMbar = new Conversor(UnidadPresion.HECTOPASCAL, UnidadPresion.MILIBAR, u->u, u->u);
 	
+	/**
+	 * Crear.
+	 *
+	 * @param in the in
+	 * @param out the out
+	 * @return the conversor
+	 * @throws IncompatibleUnitsException the incompatible units exception
+	 */
 	public static Conversor crear(Unidad in, Unidad out) throws IncompatibleUnitsException {
 		switch(in) {
 		case UnidadTemperatura.CELSIUS:

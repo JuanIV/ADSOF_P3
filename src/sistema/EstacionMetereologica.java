@@ -12,28 +12,77 @@ import excepciones.*;
 import sensores.estrategias.*;
 import visualizacion.*;
 
+// TODO: Auto-generated Javadoc
+/**
+ * Clase Class EstacionMetereologica.
+ *
+ * @author Juan Ibáñez y Tiago Oselka
+ * @version 1.0
+ */
 public class EstacionMetereologica implements IDocumento {
+	
+	/** The scheduler. */
 	private ScheduledExecutorService scheduler;
+	
+	/** The periodo segundos. */
 	private long periodoSegundos;
+	
+	/** The max lecturas. */
 	private int maxLecturas;
+	
+	/** The lecturas realizadas. */
 	private int lecturasRealizadas;
+	
+	/** The lecturas periodicas activas. */
 	private boolean lecturasPeriodicasActivas = false;
+	
+	/** The nombre. */
 	private String nombre;
+	
+	/** The longitud. */
 	private double longitud;
+	
+	/** The latitud. */
 	private double latitud;
+	
+	/** The cambio brusco. */
 	private double cambioBrusco;
+	
+	/** The sensores. */
 	private Map<String, SensorInstalado> sensores = new HashMap<String, SensorInstalado>();
+	
+	/** The alertas. */
 	private Map<Sensor, ArrayList<AlertaSensor>> alertas = new HashMap<Sensor, ArrayList<AlertaSensor>>();
 	 
+	/**
+	 * Clase Class SensorInstalado.
+	 *
+	 * @author Juan Ibáñez y Tiago Oselka
+	 * @version 1.0
+	 */
 	private class SensorInstalado {
+		
+		/** The sensor. */
 		private Sensor sensor;
+		
+		/** The fecha instalacion. */
 		private LocalDate fechaInstalacion;
 		
+		/**
+		 * Inicializa un nuevo objeto de la clase sensor instalado.
+		 *
+		 * @param sensor the sensor
+		 */
 		public SensorInstalado(Sensor sensor) {
 			this.sensor = sensor;
 			this.fechaInstalacion = LocalDate.now();
 		}
 		
+		/**
+		 * To string.
+		 *
+		 * @return the string
+		 */
 		@Override
 		public String toString() {
 			StringBuilder str = new StringBuilder();
@@ -47,6 +96,14 @@ public class EstacionMetereologica implements IDocumento {
 		}
 	}
 	
+	/**
+	 * Inicializa un nuevo objeto de la clase estacion metereologica.
+	 *
+	 * @param nombre the nombre
+	 * @param longitud the longitud
+	 * @param latitud the latitud
+	 * @param cambioBrusco the cambio brusco
+	 */
 	public EstacionMetereologica(String nombre, double longitud, double latitud, double cambioBrusco) {
 		this.nombre = nombre;
 		this.longitud = longitud;
@@ -56,6 +113,13 @@ public class EstacionMetereologica implements IDocumento {
 		this.cambioBrusco = cambioBrusco;
 	}
 	
+	/**
+	 * Inicializa un nuevo objeto de la clase estacion metereologica.
+	 *
+	 * @param nombre the nombre
+	 * @param longitud the longitud
+	 * @param latitud the latitud
+	 */
 	public EstacionMetereologica(String nombre, double longitud, double latitud) {
 		this.nombre = nombre;
 		this.longitud = longitud;
@@ -63,30 +127,62 @@ public class EstacionMetereologica implements IDocumento {
 		this.cambioBrusco = 50.0;
 	}
 	
-	/************************ Setters y Getters ****************************/
+	/**
+	 * ********************** Setters y Getters ***************************.
+	 *
+	 * @return nombre
+	 */
 	
 	public String getNombre() {
 		return nombre;
 	}
 	
+	/**
+	 * Getter de longitud.
+	 *
+	 * @return longitud
+	 */
 	public double getLongitud() {
 		return longitud;
 	}
 	
+	/**
+	 * Getter de latitud.
+	 *
+	 * @return latitud
+	 */
 	public double getLatitud() {
 		return latitud;
 	}
 	
+	/**
+	 * Getter de sensores.
+	 *
+	 * @return sensores
+	 */
 	public List<Sensor> getSensores() {
 		return sensores.values().stream().map(si -> si.sensor).toList();
 	}
 	
+	/**
+	 * Getter de sensor.
+	 *
+	 * @param id the id
+	 * @return sensor
+	 */
 	public Sensor getSensor(String id) {
 		if(sensores.containsKey(id))
 			return sensores.get(id).sensor;
 		else return null;
 	}
 	
+	/**
+	 * Getter de sensores por tipo.
+	 *
+	 * @param <T> the generic type
+	 * @param tipo the tipo
+	 * @return sensores por tipo
+	 */
 	public <T extends Sensor> List<T> getSensoresPorTipo(Class<T> tipo) {
 		return sensores.values().stream()
 	    		.map(si -> si.sensor)
@@ -95,12 +191,22 @@ public class EstacionMetereologica implements IDocumento {
 	    		.collect(Collectors.toList());
 	}
 	
+	/**
+	 * Setter de cambio brusco.
+	 *
+	 * @param cambioBrusco nuevo cambio brusco
+	 */
 	public void setCambioBrusco(double cambioBrusco) {
 		if(cambioBrusco > 100) cambioBrusco = 100;
 		if(cambioBrusco < 0) cambioBrusco = 0;
 		this.cambioBrusco = cambioBrusco;
 	}
 	
+	/**
+	 * Getter de fecha ultima lectura.
+	 *
+	 * @return fecha ultima lectura
+	 */
 	public LocalDateTime getFechaUltimaLectura() {
 		if(sensores.isEmpty()) return null;
 		SensorInstalado min = (SensorInstalado)sensores.values().toArray()[0];
@@ -111,6 +217,11 @@ public class EstacionMetereologica implements IDocumento {
 		return min.sensor.getFechaUltimaLectura();
 	}
 	
+	/**
+	 * Getter de alertas.
+	 *
+	 * @return alertas
+	 */
 	public List<AlertaSensor> getAlertas(){
 		ArrayList<AlertaSensor> lista = new ArrayList<AlertaSensor>();
 		for(ArrayList<AlertaSensor> l : alertas.values()) {
@@ -119,7 +230,11 @@ public class EstacionMetereologica implements IDocumento {
 		return lista;
 	}
 	
-	/**************************Métodos **********************************/
+	/**
+	 * ************************Métodos *********************************.
+	 *
+	 * @param si the si
+	 */
 	
 	private void medir(SensorInstalado si) {
 		if(alertas.containsKey(si.sensor) && alertas.get(si.sensor).stream().anyMatch(a -> a instanceof SensorDescalibrado)) {
@@ -151,12 +266,21 @@ public class EstacionMetereologica implements IDocumento {
 		}
 	}
 	
+	/**
+	 * Tomar mediciones.
+	 */
 	public void tomarMediciones() {
 		for(SensorInstalado si : sensores.values()) {
 			medir(si);
 		}
 	}
 	
+	/**
+	 * Iniciar lecturas periodicas.
+	 *
+	 * @param periodoSegundos the periodo segundos
+	 * @param maxLecturas the max lecturas
+	 */
 	public void iniciarLecturasPeriodicas(long periodoSegundos, int maxLecturas) {
 		this.scheduler = Executors.newSingleThreadScheduledExecutor();
 		this.lecturasPeriodicasActivas = true;
@@ -173,6 +297,9 @@ public class EstacionMetereologica implements IDocumento {
 		}, 0, periodoSegundos, TimeUnit.SECONDS);
 	}
 
+	/**
+	 * Detener lecturas periodicas.
+	 */
 	public void detenerLecturasPeriodicas() {
 		this.lecturasPeriodicasActivas = false;
 		if (scheduler != null && !scheduler.isShutdown()) {
@@ -180,6 +307,16 @@ public class EstacionMetereologica implements IDocumento {
 		}
 	}
 	
+	/**
+	 * Anadir sensor.
+	 *
+	 * @param ud the ud
+	 * @param offset the offset
+	 * @param estrategia the estrategia
+	 * @param conv the conv
+	 * @throws IncompatibleUnitsException the incompatible units exception
+	 * @throws DuplicatedSensorIdException the duplicated sensor id exception
+	 */
 	public void anadirSensor(Unidad ud, double offset, Estrategia estrategia, Conversor conv) throws IncompatibleUnitsException, DuplicatedSensorIdException {
 		Sensor sensor;
 		if(ud instanceof UnidadHumedad) {
@@ -199,28 +336,70 @@ public class EstacionMetereologica implements IDocumento {
 		sensores.put(si.sensor.getId(), si);
 	}
 	
+	/**
+	 * Anadir sensor.
+	 *
+	 * @param ud the ud
+	 * @param offset the offset
+	 * @param estrategia the estrategia
+	 * @throws IncompatibleUnitsException the incompatible units exception
+	 * @throws DuplicatedSensorIdException the duplicated sensor id exception
+	 */
 	public void anadirSensor(Unidad ud, double offset, Estrategia estrategia) throws IncompatibleUnitsException, DuplicatedSensorIdException {
 		anadirSensor(ud, offset, estrategia, Conversor.identidad(ud));
 	}
 	
+	/**
+	 * Anadir sensor.
+	 *
+	 * @param ud the ud
+	 * @param offset the offset
+	 * @param conv the conv
+	 * @throws IncompatibleUnitsException the incompatible units exception
+	 * @throws DuplicatedSensorIdException the duplicated sensor id exception
+	 */
 	public void anadirSensor(Unidad ud, double offset, Conversor conv) throws IncompatibleUnitsException, DuplicatedSensorIdException {
 		anadirSensor(ud, offset, new EstrategiaAnterior(0, (ud.getMax()+ud.getMin())/2), conv);
 	}
 	
+	/**
+	 * Anadir sensor.
+	 *
+	 * @param ud the ud
+	 * @param offset the offset
+	 * @throws IncompatibleUnitsException the incompatible units exception
+	 * @throws DuplicatedSensorIdException the duplicated sensor id exception
+	 */
 	public void anadirSensor(Unidad ud, double offset) throws IncompatibleUnitsException, DuplicatedSensorIdException {
 		anadirSensor(ud, offset, new EstrategiaAnterior(0, (ud.getMax()+ud.getMin())/2), Conversor.identidad(ud));
 	}
 	
+	/**
+	 * Limpiar alertas descalibrado.
+	 *
+	 * @param sensor the sensor
+	 */
 	private void limpiarAlertasDescalibrado(Sensor sensor) {
 		if(alertas.containsKey(sensor))
 			alertas.get(sensor).removeIf(a -> a instanceof SensorDescalibrado);
 	}
 	
+	/**
+	 * Limpiar alertas cambio brusco.
+	 *
+	 * @param sensor the sensor
+	 */
 	private void limpiarAlertasCambioBrusco(Sensor sensor) {
 		if(alertas.containsKey(sensor))
 			alertas.get(sensor).removeIf(a -> a instanceof CambioBruscoException);
 	}
 	
+	/**
+	 * Calibrar sensor interno.
+	 *
+	 * @param id the id
+	 * @param accion the accion
+	 */
 	private void calibrarSensorInterno(String id, Consumer<Sensor> accion) {
 	    if(!sensores.containsKey(id)) return;
 	    boolean retomar = false;
@@ -239,22 +418,51 @@ public class EstacionMetereologica implements IDocumento {
 	    }
 	}
 	
+	/**
+	 * Calibrar sensor.
+	 *
+	 * @param id the id
+	 * @param offset the offset
+	 * @param duracionCalibrado the duracion calibrado
+	 */
 	public void calibrarSensor(String id, double offset, Duration duracionCalibrado) {
 	    calibrarSensorInterno(id, s -> s.calibrar(offset, duracionCalibrado));
 	}
 
+	/**
+	 * Calibrar sensor.
+	 *
+	 * @param id the id
+	 * @param duracionCalibrado the duracion calibrado
+	 */
 	public void calibrarSensor(String id, Duration duracionCalibrado) {
 	    calibrarSensorInterno(id, s -> s.calibrar(duracionCalibrado));
 	}
 
+	/**
+	 * Calibrar sensor.
+	 *
+	 * @param id the id
+	 * @param offset the offset
+	 */
 	public void calibrarSensor(String id, double offset) {
 	    calibrarSensorInterno(id, s -> s.calibrar(offset));
 	}
 
+	/**
+	 * Calibrar sensor.
+	 *
+	 * @param id the id
+	 */
 	public void calibrarSensor(String id) {
 	    calibrarSensorInterno(id, s -> s.calibrar());
 	}
 	
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	@Override
 	public String toString() {
 		StringBuilder str = new StringBuilder();
@@ -269,18 +477,32 @@ public class EstacionMetereologica implements IDocumento {
 		return str.toString();
 	}
 
-	/****************************** Métodos de visualizacion **************************************/
+	/**
+	 * **************************** Métodos de visualizacion *************************************.
+	 *
+	 * @return titulo
+	 */
 	
 	@Override
 	public String getTitulo() {
 		return "Estacion Metereológica: "+nombre;
 	}
 
+	/**
+	 * Getter de header seccion principal.
+	 *
+	 * @return header seccion principal
+	 */
 	@Override
 	public String getHeaderSeccionPrincipal() {
 		return nombre;
 	}
 
+	/**
+	 * Getter de parrafos.
+	 *
+	 * @return parrafos
+	 */
 	@Override
 	public String[] getParrafos() {
 		ArrayList<String> parrafos = new ArrayList<String>();
@@ -292,6 +514,11 @@ public class EstacionMetereologica implements IDocumento {
 		return parrafos.toArray(new String[0]);
 	}
 
+	/**
+	 * Getter de listas.
+	 *
+	 * @return listas
+	 */
 	@Override
 	public ListaConTitulo[] getListas() {
 		ArrayList<ListaConTitulo> listas = new ArrayList<ListaConTitulo>();

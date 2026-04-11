@@ -1,7 +1,20 @@
 package visualizacion;
 
+// TODO: Auto-generated Javadoc
+/**
+ * Clase Class FormateadorLatex.
+ *
+ * @author Juan Ibáñez y Tiago Oselka
+ * @version 1.0
+ */
 public class FormateadorLatex implements Formateador {
 
+	/**
+	 * Getter de documento formateado.
+	 *
+	 * @param documento the documento
+	 * @return documento formateado
+	 */
 	@Override
 	public String getDocumentoFormateado(IDocumento documento) {
 		StringBuilder str = new StringBuilder();
