@@ -53,8 +53,8 @@ public class EstrategiaMedia implements Estrategia {
 	 */
 	@Override
 	public double simularLectura() {
-		double max = media + Math.abs(media)*rango;
-		double min = media - Math.abs(media)*rango;
+		double max = media + Math.abs(media)*rango/100;
+		double min = media - Math.abs(media)*rango/100;
 		double medicion = (Math.random() * (max - min) + min);
 		media = ((media * count) + medicion)/(count + 1);
 		count++;

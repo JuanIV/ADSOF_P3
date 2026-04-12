@@ -50,8 +50,8 @@ public class EstrategiaAnterior implements Estrategia{
 	 */
 	@Override
 	public double simularLectura() {
-		double max = anterior + Math.abs(anterior)*rango;
-		double min = anterior - Math.abs(anterior)*rango;
+		double max = anterior + Math.abs(anterior)*rango/100;
+		double min = anterior - Math.abs(anterior)*rango/100;
 		double medicion = (Math.random() * (max - min) + min);
 		anterior = medicion;
 		return medicion;
