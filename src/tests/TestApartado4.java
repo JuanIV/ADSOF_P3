@@ -26,9 +26,13 @@ import java.time.Duration;
  */
 public class TestApartado4 {
 
-	/** Estrategia que siempre devuelve el valor dado. */
+	/**
+	 * Estrategia que siempre devuelve el valor dado.
+	 * 
+	 * @param valor Valor que siempre devuelve la estrategia
+	 */
 	private static Estrategia fija(double valor) {
-		return () -> valor;
+		return new EstrategiaAnterior(0, valor);
 	}
 
 	// =========================================================================
@@ -38,15 +42,17 @@ public class TestApartado4 {
 	/**
 	 * Verifica que medir con un sensor cuya calibración ha caducado genera una
 	 * alerta de tipo {@link SensorDescalibrado} en la estación.
+	 * 
+	 * @throws Exception
 	 */
 	@Test
 	@DisplayName("sensor con calibración caducada genera alerta SensorDescalibrado")
-	public void testAlertaSensorCalibradoCaducado() throws IncompatibleUnitsException, DuplicatedSensorIdException {
+	public void testAlertaSensorCalibradoCaducado() throws Exception {
 		EstacionMetereologica estacion = new EstacionMetereologica("Test", 0, 0);
 		estacion.anadirSensor(UnidadTemperatura.CELSIUS, 0);
 
 		// Forzar calibración caducada
-		Sensor sensor = estacion.getSensores().get(0);
+		Sensor<?> sensor = estacion.getSensores().get(0);
 		sensor.setDuracionCalibrado(Duration.ofNanos(1));
 
 		estacion.tomarMediciones();
@@ -59,10 +65,12 @@ public class TestApartado4 {
 	/**
 	 * Verifica que medir con un valor fuera del rango válido genera una alerta de
 	 * tipo {@link SensorDescalibrado}.
+	 * 
+	 * @throws Exception
 	 */
 	@Test
 	@DisplayName("lectura fuera de rango genera alerta SensorDescalibrado")
-	public void testAlertaLecturaFueraDeRango() throws IncompatibleUnitsException, DuplicatedSensorIdException {
+	public void testAlertaLecturaFueraDeRango() throws Exception {
 		EstacionMetereologica estacion = new EstacionMetereologica("Test", 0, 0);
 		// Humedad válida: 0-100%. Valor 105 está fuera de rango
 		Conversor conv = Conversor.identidad(UnidadHumedad.HUMEDAD);
@@ -85,11 +93,12 @@ public class TestApartado4 {
 	 * <p>
 	 * Se usa un umbral del 10% y un cambio del 100% (de 10 a 20).
 	 * </p>
+	 * 
+	 * @throws Exception
 	 */
 	@Test
 	@DisplayName("cambio brusco genera alerta CambioBruscoException")
-	public void testAlertaCambioBrusco()
-			throws IncompatibleUnitsException, DuplicatedSensorIdException, SensorDescalibrado {
+	public void testAlertaCambioBrusco() throws Exception {
 		EstacionMetereologica estacion = new EstacionMetereologica("Test", 0, 0, 10.0); // umbral 10%
 		double[] valor = { 500.0 }; // valor mutable para la lambda
 		Conversor conv = Conversor.identidad(UnidadPresion.HECTOPASCAL);
@@ -147,7 +156,7 @@ public class TestApartado4 {
 
 		estacion.tomarMediciones();
 
-		Sensor sensorNormal = estacion.getSensoresPorTipo(SensorTemperatura.class).get(0);
+		Sensor<?> sensorNormal = estacion.getSensoresPorTipo(SensorTemperatura.class).get(0);
 		assertFalse(sensorNormal.getHistorial().isEmpty(),
 				"El sensor normal debe tener lecturas aunque otro esté descalibrado");
 	}
@@ -168,7 +177,7 @@ public class TestApartado4 {
 		estacion.anadirSensor(UnidadTemperatura.CELSIUS, 0, fija(20.0), conv);
 
 		// Forzar descalibración
-		Sensor sensor = estacion.getSensores().get(0);
+		Sensor<?> sensor = estacion.getSensores().get(0);
 		sensor.setDuracionCalibrado(Duration.ofNanos(1));
 		estacion.tomarMediciones();
 
