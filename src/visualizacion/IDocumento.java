@@ -1,6 +1,5 @@
 package visualizacion;
 
-// TODO: Auto-generated Javadoc
 /**
  * Clase Interface IDocumento.
  *
@@ -12,28 +11,28 @@ public interface IDocumento {
 	/**
 	 * Getter de titulo.
 	 *
-	 * @return titulo
+	 * @return titulo del documento
 	 */
 	public String getTitulo();
 	
 	/**
 	 * Getter de header seccion principal.
 	 *
-	 * @return header seccion principal
+	 * @return header de la seccion principal
 	 */
 	public String getHeaderSeccionPrincipal();
 	
 	/**
 	 * Getter de parrafos.
 	 *
-	 * @return parrafos
+	 * @return parrafos del documento
 	 */
 	public String[] getParrafos();
 	
 	/**
 	 * Getter de listas.
 	 *
-	 * @return listas
+	 * @return listas del documento
 	 */
 	public ListaConTitulo[] getListas();
 }

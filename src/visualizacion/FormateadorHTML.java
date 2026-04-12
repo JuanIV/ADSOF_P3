@@ -1,8 +1,7 @@
 package visualizacion;
 
-// TODO: Auto-generated Javadoc
 /**
- * Clase Class FormateadorHTML.
+ * Clase FormateadorHTML.
  *
  * @author Juan Ibáñez y Tiago Oselka
  * @version 1.0
@@ -12,7 +11,7 @@ public class FormateadorHTML implements Formateador {
 	/**
 	 * Getter de documento formateado.
 	 *
-	 * @param documento the documento
+	 * @param documento Documento al que aplicar el formato
 	 * @return documento formateado
 	 */
 	@Override

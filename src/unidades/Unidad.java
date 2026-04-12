@@ -1,6 +1,5 @@
 package unidades;
 
-// TODO: Auto-generated Javadoc
 /**
  * Clase Interface Unidad.
  *
@@ -12,29 +11,29 @@ public interface Unidad {
     /**
      * Getter de min.
      *
-     * @return min
+     * @return min Valor minimo del rango de la unidad
      */
     double getMin();
     
     /**
      * Getter de max.
      *
-     * @return max
+     * @return max Valor maximo del rango de la unidad
      */
     double getMax();
     
     /**
      * Getter de simbolo.
      *
-     * @return simbolo
+     * @return simbolo Símbolo de escritura de la unidad
      */
     String getSimbolo();
     
     /**
-     * In range.
+     * Comprueba si una medicion está dentro del rango de la unidad
      *
-     * @param value the value
-     * @return true, if successful
+     * @param value Valor a comprobar
+     * @return true, si está en rango, false si no
      */
     boolean inRange(double value);
 }

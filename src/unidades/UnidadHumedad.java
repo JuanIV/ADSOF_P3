@@ -1,32 +1,31 @@
 package unidades;
 
-// TODO: Auto-generated Javadoc
 /**
- * Clase Enum UnidadHumedad.
+ * Enum UnidadHumedad.
  *
  * @author Juan Ibáñez y Tiago Oselka
  * @version 1.0
  */
 public enum UnidadHumedad implements Unidad {
 	
-	/** The humedad. */
+	/** Porcentaje de humedad. */
 	HUMEDAD(0, 100, "%");
 	
-	/** The min. */
+	/** Valor minimo del rango. */
 	private double min;
 	
-	/** The max. */
+	/** Valor maximo del rango. */
 	private double max;
 	
-	/** The simbolo. */
+	/** Símbolo de escritura de la unidad. */
 	private String simbolo;
 	
 	/**
 	 * Inicializa un nuevo objeto de la clase unidad humedad.
 	 *
-	 * @param min the min
-	 * @param max the max
-	 * @param simbolo the simbolo
+	 * @param min Minimo del rango permitido para la unidad
+	 * @param max Maximo del rango permitido para la unidad
+	 * @param simbolo Símbolo de escritura de la unidad
 	 */
 	private UnidadHumedad(double min, double max, String simbolo) {
 		this.min = min;
@@ -37,7 +36,7 @@ public enum UnidadHumedad implements Unidad {
 	/**
 	 * Getter de min.
 	 *
-	 * @return min
+	 * @return min Minimo del rango
 	 */
 	public double getMin() {
 		return min;
@@ -46,7 +45,7 @@ public enum UnidadHumedad implements Unidad {
 	/**
 	 * Getter de max.
 	 *
-	 * @return max
+	 * @return max Maximo del rango
 	 */
 	public double getMax() {
 		return max;
@@ -55,17 +54,17 @@ public enum UnidadHumedad implements Unidad {
 	/**
 	 * Getter de simbolo.
 	 *
-	 * @return simbolo
+	 * @return simbolo Simbolo de la unidad
 	 */
 	public String getSimbolo() {
 		return simbolo;
 	}
 	
 	/**
-	 * In range.
-	 *
-	 * @param value the value
-	 * @return true, if successful
+	 * Comprueba si una medicion está dentro del rango de la unidad
+     *
+     * @param value Valor a comprobar
+     * @return true, si está en rango, false si no
 	 */
 	public boolean inRange(double value) {
 		return (value >= min)&&(value <= max);

@@ -2,32 +2,31 @@ package excepciones;
 
 import sensores.*;
 
-// TODO: Auto-generated Javadoc
 /**
- * Clase Class CambioBruscoException.
+ * Clase CambioBruscoException.
  *
  * @author Juan Ibáñez y Tiago Oselka
  * @version 1.0
  */
 public class CambioBruscoException extends AlertaSensor {
 	
-	/** The Constant serialVersionUID. */
+	/** Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 	
-	/** The ultima. */
+	/** Ultima medicion (que provocó la alerta). */
 	private double ultima;
 	
-	/** The anterior. */
+	/** Anterior medicion a la que causó la alerta. */
 	private double anterior;
 
 	/**
 	 * Inicializa un nuevo objeto de la clase cambio brusco exception.
 	 *
-	 * @param sensor the sensor
-	 * @param ultima the ultima
-	 * @param anterior the anterior
+	 * @param sensor Sensor que activó la alerta
+	 * @param ultima Ultima medición
+	 * @param anterior Medicion anterior a la ultima
 	 */
-	public CambioBruscoException(Sensor sensor, double ultima, double anterior) {
+	public CambioBruscoException(Sensor<?> sensor, double ultima, double anterior) {
 		super(sensor, "Cambio brusco");
 		this.ultima = ultima;
 		this.anterior = anterior;

@@ -1,8 +1,7 @@
 package visualizacion;
 
-// TODO: Auto-generated Javadoc
 /**
- * Clase Class FormateadorMarkDown.
+ * Clase FormateadorMarkDown.
  *
  * @author Juan Ibáñez y Tiago Oselka
  * @version 1.0
@@ -12,7 +11,7 @@ public class FormateadorMarkDown implements Formateador {
 	/**
 	 * Getter de documento formateado.
 	 *
-	 * @param documento the documento
+	 * @param documento Documento a formatear
 	 * @return documento formateado
 	 */
 	@Override

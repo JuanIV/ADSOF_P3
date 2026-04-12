@@ -2,25 +2,24 @@ package procesadores;
 
 import java.time.LocalDateTime;
 
-// TODO: Auto-generated Javadoc
 /**
- * Clase Class Registro.
+ * Clase Registro.
  *
  * @author Juan Ibáñez y Tiago Oselka
  * @version 1.0
  */
 public class Registro {
 	
-	/** The medicion. */
+	/** Valor de la medicion que se registra. */
 	private double medicion;
 	
-	/** The fecha. */
+	/** Fecha del registro. */
 	private LocalDateTime fecha;
 	
 	/**
 	 * Inicializa un nuevo objeto de la clase registro.
 	 *
-	 * @param medicion the medicion
+	 * @param medicion Valor de la medicion a registrar
 	 */
 	public Registro(double medicion) {
 		this.medicion = medicion;
@@ -30,7 +29,7 @@ public class Registro {
 	/**
 	 * Getter de medicion.
 	 *
-	 * @return medicion
+	 * @return medicion Valor de la medicion registrada
 	 */
 	public double getMedicion() {
 		return medicion;
@@ -39,7 +38,7 @@ public class Registro {
 	/**
 	 * Getter de fecha.
 	 *
-	 * @return fecha
+	 * @return fecha Fecha de registro
 	 */
 	public LocalDateTime getFecha() {
 		return fecha;
@@ -48,7 +47,7 @@ public class Registro {
 	/**
 	 * To string.
 	 *
-	 * @return the string
+	 * @return String con el valor de la medicion
 	 */
 	@Override
 	public String toString() {

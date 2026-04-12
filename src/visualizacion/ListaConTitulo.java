@@ -2,26 +2,25 @@ package visualizacion;
 
 import java.util.*;
 
-// TODO: Auto-generated Javadoc
 /**
- * Clase Class ListaConTitulo.
+ * Clase ListaConTitulo.
  *
  * @author Juan Ibáñez y Tiago Oselka
  * @version 1.0
  */
 public class ListaConTitulo {
 	
-	/** The titulo. */
+	/** Titulo de la lista. */
 	private String titulo;
 	
-	/** The lista. */
+	/** Lista. */
 	private List<Object> lista;
 	
 	/**
 	 * Inicializa un nuevo objeto de la clase lista con titulo.
 	 *
-	 * @param titulo the titulo
-	 * @param lista the lista
+	 * @param titulo Titulo de la lista
+	 * @param lista Lista de objetos
 	 */
 	public ListaConTitulo(String titulo, List<Object> lista) {
 		this.titulo = titulo;
@@ -31,7 +30,7 @@ public class ListaConTitulo {
 	/**
 	 * Getter de titulo.
 	 *
-	 * @return titulo
+	 * @return titulo de la lista
 	 */
 	public String getTitulo() {
 		return titulo;

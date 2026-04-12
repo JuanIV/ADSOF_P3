@@ -1,38 +1,37 @@
 package unidades;
 
-// TODO: Auto-generated Javadoc
 /**
- * Clase Enum UnidadPresion.
+ * Enum UnidadPresion.
  *
  * @author Juan Ibáñez y Tiago Oselka
  * @version 1.0
  */
 public enum UnidadPresion implements Unidad {
 	
-	/** The hectopascal. */
+	/** hectopascal. */
 	HECTOPASCAL(300, 1100, " hPa"),
 	
-	/** The pascal. */
+	/** pascal. */
 	PASCAL(30000, 110000, " Pa"),
 	
-	/** The milibar. */
+	/** milibar. */
 	MILIBAR(300, 1100, " mbar");
 	
-	/** The min. */
+	/** Valor minimo del rango. */
 	private double min;
 	
-	/** The max. */
+	/** Valor maximo del rango. */
 	private double max;
 	
-	/** The simbolo. */
+	/** Símbolo de escritura de la unidad. */
 	private String simbolo;
 	
 	/**
 	 * Inicializa un nuevo objeto de la clase unidad presion.
 	 *
-	 * @param min the min
-	 * @param max the max
-	 * @param simbolo the simbolo
+	 * @param min Minimo del rango permitido para la unidad
+	 * @param max Maximo del rango permitido para la unidad
+	 * @param simbolo Símbolo de escritura de la unidad
 	 */
 	private UnidadPresion(double min, double max, String simbolo) {
 		this.min = min;
@@ -43,7 +42,7 @@ public enum UnidadPresion implements Unidad {
 	/**
 	 * Getter de min.
 	 *
-	 * @return min
+	 * @return min Minimo del rango
 	 */
 	public double getMin() {
 		return min;
@@ -52,7 +51,7 @@ public enum UnidadPresion implements Unidad {
 	/**
 	 * Getter de max.
 	 *
-	 * @return max
+	 * @return max Maximo del rango
 	 */
 	public double getMax() {
 		return max;
@@ -61,17 +60,17 @@ public enum UnidadPresion implements Unidad {
 	/**
 	 * Getter de simbolo.
 	 *
-	 * @return simbolo
+	 * @return simbolo Simbolo de la unidad
 	 */
 	public String getSimbolo() {
 		return simbolo;
 	}
 	
 	/**
-	 * In range.
-	 *
-	 * @param value the value
-	 * @return true, if successful
+	 * Comprueba si una medicion está dentro del rango de la unidad
+     *
+     * @param value Valor a comprobar
+     * @return true, si está en rango, false si no
 	 */
 	public boolean inRange(double value) {
 		return (value >= min)&&(value <= max);

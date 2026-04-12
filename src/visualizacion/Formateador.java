@@ -1,6 +1,5 @@
 package visualizacion;
 
-// TODO: Auto-generated Javadoc
 /**
  * Clase Interface Formateador.
  *
