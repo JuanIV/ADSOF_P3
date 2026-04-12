@@ -227,7 +227,7 @@ public class TestApartado3 {
 
 		estacion.tomarMediciones();
 
-		Sensor sensor = estacion.getSensores().get(0);
+		Sensor<?> sensor = estacion.getSensores().get(0);
 		assertEquals(UnidadTemperatura.KELVIN, sensor.getUnidadEscritura(),
 				"La unidad de escritura debe ser Kelvin tras usar el conversor");
 		assertFalse(sensor.getHistorial().isEmpty(), "Debe haber lecturas en el historial");

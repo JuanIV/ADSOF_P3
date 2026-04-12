@@ -24,7 +24,7 @@ public class EstacionMetereologica implements IDocumento {
 	private static final double DF_SUDDEN_CHANGE_VAL = 50.0;
 
 	/** Estrategia por defecto que se aplica a los sensores según su tipo de unidad */
-	private static final Estrategia DF_STRATEGY(Unidad ud) {return new EstrategiaAnterior(0, (ud.getMax() + ud.getMin()) / 2);}
+	private static Estrategia DF_STRATEGY(Unidad ud) {return new EstrategiaAnterior(0, (ud.getMax() + ud.getMin()) / 2);}
 
 	/** scheduler para ejecutar las mediciones periódicas. */
 	private ScheduledExecutorService scheduler;

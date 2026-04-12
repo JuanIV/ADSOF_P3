@@ -5,6 +5,9 @@ import excepciones.*;
 
 /**
  * Clase fábrica para crear converosres entre unidades
+ * 
+ * @author Juan Ibáñez y Tiago Oselka
+ * @version 1.0
  */
 public class ConversorFactory {
 	
