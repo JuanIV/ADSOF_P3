@@ -40,6 +40,9 @@ public abstract class Sensor<Ud extends Unidad> {
 	/** Fecha del ultimo calibrado. */
 	protected LocalDateTime fechaUltimoCalibrado;
 	
+	/** Indica si el sensor está calibrado */
+	private boolean calibrado = true;
+	
 	/** Valor de la ultima lectura. */
 	protected double valorUltimaLectura;
 	
@@ -215,7 +218,12 @@ public abstract class Sensor<Ud extends Unidad> {
 	 * @return true, si está calibrado, false si no
 	 */
 	public boolean estaCalibrado() {
-		return (LocalDateTime.now().isBefore(fechaUltimoCalibrado.plus(duracionCalibrado)));
+		if(!calibrado || !LocalDateTime.now().isBefore(fechaUltimoCalibrado.plus(duracionCalibrado))) {
+			calibrado = false;
+			return false;
+		} else {
+			return true;
+		}
 	}
 	
 	/**
@@ -225,6 +233,7 @@ public abstract class Sensor<Ud extends Unidad> {
 	 * @param duracionCalibrado duracion calibrado
 	 */
 	public void calibrar(double nuevoOffset, Duration duracionCalibrado) {
+		calibrado = true;
 		offset = nuevoOffset;
 		this.duracionCalibrado = duracionCalibrado;
 		fechaUltimoCalibrado = LocalDateTime.now();
@@ -262,8 +271,9 @@ public abstract class Sensor<Ud extends Unidad> {
 	 */
 	public void tomarMedicion() throws SensorDescalibrado {
 		double medicion = estrategia.simularLectura() - offset;
-		if(!(unidad.inRange(medicion)) || !estaCalibrado())
+		if(!(unidad.inRange(medicion)) || !estaCalibrado()) {
 			throw new SensorDescalibrado(this);
+		}
 		this.fechaUltimaLectura = LocalDateTime.now();
 		this.valorUltimaLectura = medicion;
 	    procesador.registrarMedicion(medicion);

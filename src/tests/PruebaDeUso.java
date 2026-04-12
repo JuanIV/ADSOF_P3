@@ -181,7 +181,7 @@ public class PruebaDeUso {
 				.filter(a -> a.getSensor().getId().equals(sensorCaducado.getId()) && a instanceof SensorDescalibrado)
 				.count();
 		System.out.println("\nAlertas SensorDescalibrado del sensor calibrado tras calibrar: " + alertasTras
-				+ " (esperado: 0) " + (alertasTras == 0 ? "✓" : "ERROR"));
+				+ " (esperado: 0) " + (alertasTras == 0 ? "OK" : "ERROR"));
 
 		separador("APARTADO 5 — Visualización");
 
