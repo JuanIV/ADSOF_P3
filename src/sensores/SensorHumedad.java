@@ -12,10 +12,13 @@ import procesadores.*;
  * @author Juan Ibáñez y Tiago Oselka
  * @version 1.0
  */
-public class SensorHumedad extends Sensor {
+public class SensorHumedad extends Sensor<UnidadHumedad> {
 	
 	/** Cuenta estática de los sensores de humedad para poder escribir el número en la id. */
 	private static int count = 0;
+	
+	/** Etiqueta que se añade al comienzo de la id de los sensores de esta clase */
+	private static final String tag = "HUM";
 	
 	/**
 	 * Inicializa un nuevo objeto de la clase sensor humedad.
@@ -27,7 +30,7 @@ public class SensorHumedad extends Sensor {
 	 * @throws IncompatibleUnitsException si las unidades del sensor no son las unidades de entrada del conversor
 	 */
 	public SensorHumedad(UnidadHumedad ud, double offset, Estrategia estrategia, Conversor conv) throws IncompatibleUnitsException {
-		super(String.format("HUM-%04d", (count++)), ud, offset, estrategia, new Procesador(conv));
+		super(String.format("%s-%04d", tag, (count++)), ud, offset, estrategia, new Procesador(conv));
 		if(!ud.equals(conv.getUdEntrada())) {
 			count--;
 			throw new IncompatibleUnitsException("Las unidades del sensor y el conversor no son compatibles");

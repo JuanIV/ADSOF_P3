@@ -12,10 +12,13 @@ import unidades.*;
  * @author Juan Ibáñez y Tiago Oselka
  * @version 1.0
  */
-public class SensorTemperatura extends Sensor {
+public class SensorTemperatura extends Sensor<UnidadTemperatura> {
 	
 	/** The count. */
 	private static int count  = 0;
+	
+	/** Etiqueta que se añade al comienzo de la id de los sensores de esta clase */
+	private static final String tag = "TEMP";
 	
 	/**
 	 * Inicializa un nuevo objeto de la clase sensor temperatura.
@@ -27,7 +30,7 @@ public class SensorTemperatura extends Sensor {
 	 * @throws IncompatibleUnitsException si las unidades del sensor no son las unidades de entrada del conversor
 	 */
 	public SensorTemperatura(UnidadTemperatura ud, double offset, Estrategia estrategia, Conversor conv) throws IncompatibleUnitsException {
-		super(String.format("TEMP-%04d", (count++)), ud, offset, estrategia, new Procesador(conv));
+		super(String.format("%s-%04d", tag, (count++)), ud, offset, estrategia, new Procesador(conv));
 		if(!ud.equals(conv.getUdEntrada())) {
 			count--;
 			throw new IncompatibleUnitsException("Las unidades del sensor y el conversor no son compatibles");

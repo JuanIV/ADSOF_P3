@@ -9,7 +9,6 @@ import sensores.*;
 import sensores.estrategias.*;
 import sistema.*;
 import unidades.*;
-import visualizacion.*;
 
 import java.time.Duration;
 

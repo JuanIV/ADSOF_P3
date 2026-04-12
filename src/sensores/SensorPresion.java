@@ -12,10 +12,13 @@ import unidades.*;
  * @author Juan Ibáñez y Tiago Oselka
  * @version 1.0
  */
-public class SensorPresion extends Sensor {
+public class SensorPresion extends Sensor<UnidadPresion> {
 	
 	/** The count. */
 	private static int count = 0;
+	
+	/** Etiqueta que se añade al comienzo de la id de los sensores de esta clase */
+	private static final String tag = "PRES";
 	
 	/**
 	 * Inicializa un nuevo objeto de la clase sensor presion.
@@ -27,7 +30,7 @@ public class SensorPresion extends Sensor {
 	 * @throws IncompatibleUnitsException si las unidades del sensor no son las unidades de entrada del conversor
 	 */
 	public SensorPresion(UnidadPresion ud, double offset, Estrategia estrategia, Conversor conv) throws IncompatibleUnitsException {
-		super(String.format("PRES-%04d", (count++)), ud, offset, estrategia, new Procesador(conv));
+		super(String.format("%s-%04d", tag, (count++)), ud, offset, estrategia, new Procesador(conv));
 		if(!ud.equals(conv.getUdEntrada())) {
 			count--;
 			throw new IncompatibleUnitsException("Las unidades del sensor y el conversor no son compatibles");

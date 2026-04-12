@@ -13,7 +13,17 @@ import excepciones.*;
  * @author Juan Ibáñez y Tiago Oselka
  * @version 1.0
  */
-public abstract class Sensor {
+public abstract class Sensor<Ud extends Unidad> {
+	
+	/* Macros */
+	/** Fecha de ultima lectura con la que se inicializa ese atributo al crear un sensor*/
+	private static final LocalDateTime INIT_LAST_READ_DATE = LocalDateTime.MIN;
+	
+	/** Valor de medicion con el que se inicializa la ultima lectura */
+	private static final double INIT_LAST_READ_VALUE = 0;
+	
+	/** Duracion de calibrado por defecto */
+	private static final Duration DF_CAL_DURATION = Duration.ofDays(365);
 	
 	/** id del sensor. */
 	protected final String id;
@@ -22,7 +32,7 @@ public abstract class Sensor {
 	protected double offset;
 	
 	/** Unidades de medición del sensor. */
-	protected Unidad unidad;
+	protected Ud unidad;
 	
 	/** Fecha de la ultima lectura. */
 	protected LocalDateTime fechaUltimaLectura;
@@ -52,13 +62,13 @@ public abstract class Sensor {
 	 * @param procesador Procesador del sensor
 	 * @param duracionCalibrado Duracion del calibrado del sensor
 	 */
-	public Sensor(String id, Unidad unidad, double offset, Estrategia estrategia, Procesador procesador, Duration duracionCalibrado) {
+	public Sensor(String id, Ud unidad, double offset, Estrategia estrategia, Procesador procesador, Duration duracionCalibrado) {
 		this.id = id;
 		this.offset = offset;
 		this.unidad = unidad;
-		this.fechaUltimaLectura = LocalDateTime.now();
+		this.fechaUltimaLectura = INIT_LAST_READ_DATE;
 		this.fechaUltimoCalibrado = LocalDateTime.now();
-		this.valorUltimaLectura = 0;
+		this.valorUltimaLectura = INIT_LAST_READ_VALUE;
 		this.duracionCalibrado = duracionCalibrado;
 		this.estrategia = estrategia;
 		this.procesador = procesador;
@@ -73,8 +83,8 @@ public abstract class Sensor {
 	 * @param estrategia Estrategia del sensor
 	 * @param procesador Procesador del sensor
 	 */
-	public Sensor(String id, Unidad unidad, double offset, Estrategia estrategia, Procesador procesador) {
-		this(id, unidad, offset, estrategia, procesador, Duration.ofDays(365));
+	public Sensor(String id, Ud unidad, double offset, Estrategia estrategia, Procesador procesador) {
+		this(id, unidad, offset, estrategia, procesador, DF_CAL_DURATION);
 	}
 	
 	/*********************Getters y setters*****************************/
@@ -103,7 +113,7 @@ public abstract class Sensor {
 	 *
 	 * @return unidad lectura
 	 */
-	public Unidad getUnidadLectura() {
+	public Ud getUnidadLectura() {
 		return unidad;
 	}
 	
